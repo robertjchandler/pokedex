@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -11,65 +10,35 @@ func TestCleanInput(t *testing.T) {
 		expected []string
 	}{
 		{
+			input:    "  ",
+			expected: []string{},
+		},
+		{
+			input:    "  hello  ",
+			expected: []string{"hello"},
+		},
+		{
 			input:    "  hello  world  ",
 			expected: []string{"hello", "world"},
 		},
 		{
-			input:    " HELLO WORLD ",
-			expected: []string{"hello", "world"},
-		},
-		{
-			input:    "  Hello  World  ",
-			expected: []string{"hello", "world"},
-		},
-		{
-			input:    "  hELLO wORLD  ",
+			input:    "  HellO  World  ",
 			expected: []string{"hello", "world"},
 		},
 	}
 
-	passCount := 0
-	failCount := 0
-
 	for _, c := range cases {
 		actual := cleanInput(c.input)
 		if len(actual) != len(c.expected) {
-			failCount++
-			t.Errorf(`---------------------------------
-Actual length does not equal expected length.
-Actual:     %v
-Expected:  	%v
-Fail
-`, len(actual), len(c.expected))
-		} else {
-			passCount++
-			fmt.Printf(`---------------------------------
-Actual:     %v
-Expected:  	%v
-Pass
-`, len(actual), len(c.expected))
+			t.Errorf("lengths don't match: '%v' vs '%v'", actual, c.expected)
+			continue
 		}
 		for i := range actual {
 			word := actual[i]
 			expectedWord := c.expected[i]
 			if word != expectedWord {
-				failCount++
-				t.Errorf(`---------------------------------
-Word does not match expected word.
-Word:			"%v"
-Expected Word:	"%v"
-Fail
-`, word, expectedWord)
-			} else {
-				passCount++
-				fmt.Printf(`---------------------------------
-Word:			"%v"
-Expected Word:	"%v"
-Pass
-`, word, expectedWord)
+				t.Errorf("cleanInput(%v) == %v, expected %v", c.input, actual, c.expected)
 			}
 		}
 	}
-
-	fmt.Printf("%d passed, %d failed\n", passCount, failCount)
 }

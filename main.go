@@ -1,7 +1,7 @@
 package main
 
-func cleanInput(text string) []string {
-	var result []string
+import "fmt"
 
-	return result
+func main() {
+	fmt.Println("Hello, World!")
 }
